@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Sprites/Wall front.png" type="Texture" id=1]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 15.5676, 15.8052 )
+
+[node name="Barrel" type="StaticBody2D"]
+position = Vector2( 0, -1.08719 )
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Wall front" type="Sprite" parent="Hitbox"]
+position = Vector2( 0.0389727, -0.0660975 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 1 )
