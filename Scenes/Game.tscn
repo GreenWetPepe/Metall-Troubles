@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Scenes/Room.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
@@ -12,6 +12,9 @@
 [ext_resource path="res://Scripts/AStar.gd" type="Script" id=10]
 [ext_resource path="res://Scenes/UI.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Scenes/Decoration.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Sprites/vorota.png" type="Texture" id=13]
+[ext_resource path="res://Sprites/Door.png" type="Texture" id=14]
+[ext_resource path="res://Scenes/Animated sprite.tscn" type="PackedScene" id=15]
 
 [sub_resource type="TileSet" id=1]
 0/name = "Ground.png 0"
@@ -67,6 +70,12 @@ position = Vector2( 65.7317, 4.00452 )
 z_index = -1
 script = ExtResource( 7 )
 
+[node name="Door" parent="Room" instance=ExtResource( 15 )]
+position = Vector2( 1618.85, 86.7774 )
+scale = Vector2( 1.911, 1.911 )
+texture = ExtResource( 13 )
+vframes = 11
+
 [node name="Objects" type="Node2D" parent="."]
 script = ExtResource( 6 )
 
@@ -118,8 +127,13 @@ position = Vector2( 656.601, 1122.3 )
 scale = Vector2( 1.91095, 1.91095 )
 texture = ExtResource( 5 )
 
+[node name="Arks" type="Sprite" parent="Objects/Objects upper player"]
+position = Vector2( 1682.75, -33.7349 )
+scale = Vector2( 1.91095, 1.91095 )
+texture = ExtResource( 14 )
+
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 1441.12, 461.629 )
+position = Vector2( 1693.1, 181.926 )
 
 [node name="Camera" parent="." instance=ExtResource( 4 )]
 scale = Vector2( 1.00925, 0.989246 )

@@ -26,6 +26,7 @@ position = Vector2( 6.15651, -1.22747 )
 shape = SubResource( 2 )
 
 [node name="Rays" type="Node2D" parent="."]
+position = Vector2( 2, 0 )
 scale = Vector2( 1.5, 1.5 )
 z_as_relative = false
 
@@ -111,3 +112,5 @@ rotation = 5.75959
 z_as_relative = false
 enabled = true
 cast_to = Vector2( 60, 0 )
+
+[node name="Chest" type="Node2D" parent="Rays"]

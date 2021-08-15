@@ -1,11 +1,11 @@
 extends Sprite
 
 var anim_preset
-var now_anim
+var now_anim = null
 var start_frame
 var end_frame
 var anim_step_delay
-var last_anim_step
+var last_anim_step = OS.get_ticks_msec()
 var now_frame
 
 var is_anim_ended = false

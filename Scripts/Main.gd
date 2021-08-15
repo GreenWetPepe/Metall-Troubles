@@ -17,7 +17,7 @@ var list_of_looped_anims = ["walk", "fly", "stay", "fire"]
 var normal_waves = [[0, 1, 1, 0, 2]]
 var hard_waves = [[1, 3, 0, 0, 1], [2, 0, 3, 1, 0], [0, 5, 3, 2, 0], [0, 2, 0, 2, 5]]
 # normal waves, hard waves
-var waves_types = [[3, 0], [2, 1], [3, 1], [2, 2], [2, 3], [4, 2], [4, 3], [0, 5]]
+var waves_types = [[0, 0], [2, 1], [3, 1], [2, 2], [2, 3], [4, 2], [4, 3], [0, 5]]
 
 						#///////PLAYER\\\\\\\#
 
