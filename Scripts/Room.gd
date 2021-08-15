@@ -4,6 +4,7 @@ var is_level_completed = false
 
 onready var door = get_node("StaticBody2D/Door")
 onready var vorota = get_node("Door")
+onready var chest = get_node("Chest")
 
 var waves = Main.waves_types[Main.now_level]
 
@@ -13,6 +14,7 @@ func _ready():
 	vorota.load_anim_preset([["open", 0, 10, 200]])
 
 func step(enemies_count):
+	chest.step()
 	if vorota.get_anim() != null:
 		vorota.step()
 	if enemies_count == 0 and waves[0] + waves[1] != 0:

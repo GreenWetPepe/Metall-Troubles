@@ -8,7 +8,7 @@ var cursor = load("Sprites/Arr.png")
 var cursor_size = Vector2(64, 64)
 
 var now_level = 0
-var room_size = [100, 100, 500, 500]
+var room_size = [100, 100, 2700, 1600]
 
 var list_of_looped_anims = ["walk", "fly", "stay", "fire"]
 

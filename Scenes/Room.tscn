@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Sprites/arena.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/Chest.tscn" type="PackedScene" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 37.9048, 37.8129 )
@@ -117,3 +118,7 @@ shape = SubResource( 9 )
 [node name="CollisionShape2D7" type="CollisionShape2D" parent="Chest room"]
 position = Vector2( 1767.99, -159.158 )
 shape = SubResource( 9 )
+
+[node name="Chest" parent="." instance=ExtResource( 2 )]
+position = Vector2( 1614.21, -283.733 )
+scale = Vector2( 2, 2 )

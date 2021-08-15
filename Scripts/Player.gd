@@ -21,6 +21,8 @@ var delt_ulti_bull_spawn
 var is_ulti = false
 var spawned_ulti_bull_count = 0
 
+var need_open_chest = false
+
 var now_weapon_id = 1
 
 var last_time_undamage = OS.get_ticks_msec()
@@ -52,6 +54,10 @@ func _input(event):
 			velocity.y += 1
 		if Input.is_key_pressed(KEY_W):
 			velocity.y -= 1
+		if Input.is_key_pressed(KEY_E):
+			need_open_chest = true
+		else:
+			need_open_chest = false
 		if Input.is_key_pressed(KEY_SPACE):
 			sprite.change_anim("ultimate")
 			gun.visible = false
