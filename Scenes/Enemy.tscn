@@ -112,5 +112,3 @@ rotation = 5.75959
 z_as_relative = false
 enabled = true
 cast_to = Vector2( 60, 0 )
-
-[node name="Chest" type="Node2D" parent="Rays"]

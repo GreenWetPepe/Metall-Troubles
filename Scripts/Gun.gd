@@ -56,8 +56,10 @@ func shoot():
 			rng.randomize()
 			var ang = angle + rng.randf_range(-gun_accuracy, gun_accuracy)
 			var bul_pos = global_position
-			bul_pos.x += sprites.texture.get_size().x / 5 * cos(ang) + 5 * cos(ang) #ЭТО ТАКОЙ КАСТЫЛЬ(ПРОСТО НЕЧТО)
-			bul_pos.y += 5 * sin(ang) + sprites.texture.get_size().x / 5 * sin(ang) #БЛ***
+			if get_parent().gun_pose == "left":
+				bul_pos.y -= 13
+			#bul_pos.x += sprites.texture.get_size().x / 5 * cos(ang) + 5 * cos(ang) #ЭТО ТАКОЙ КАСТЫЛЬ(ПРОСТО НЕЧТО)
+			#bul_pos.y += 5 * sin(ang) + sprites.texture.get_size().x / 5 * sin(ang) #БЛ***
 			#audio.play()
 			objects.spawn_bullet(bul_pos, Vector2(cos(ang), sin(ang)), ang, bullet_anim_preset, bullet_preset, "bullet", true)
 	

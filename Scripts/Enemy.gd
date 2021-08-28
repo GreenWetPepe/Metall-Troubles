@@ -28,49 +28,62 @@ var need_hit = false
 
 var player_ang
 
+var enemy_to_heal = null
+
 var delete = false
 var need_spawn = true
 var is_dead = false
 
 var is_shooted = false
+var is_healing = false
 
 var ang = 1.0
 
 func _ready():
-	if type == "mage" or type == "light":
+	if type == "mage" or type == "light" or type == "healer":
 		AI_script.set_object_list(objects)
-		
-		
+	
+	rays.get_child(0).scale = Vector2(ray_scale, ray_scale)
 	for ray in rays.get_children():
 		ray.add_exception(self)
-	rays.get_child(0).scale = Vector2(ray_scale, ray_scale)
 	body.scale = Vector2(body_scale, body_scale)
 	sprite.load_preset(anim_preset, frames_count, texture)
 	sprite.scale = Vector2(texture_scale, texture_scale)
 	sprite.change_anim("walk")
 
 func track(pos):
-	pos
 	distance = (pos - position)
 	angle = distance.angle()
 	
 func step(pos):
 	sprite.step()
+	if type == "healer":
+		print(sprite.now_frame)
 	player_ang = (pos - position)
 	player_ang.angle()
 	if is_dead:
 		play_anim()
 		return
 		
+	if type == "healer":
+		pos = AI_script.healer_logic(pos, self)
+		
 	astar.set_cellv(astar.world_to_map(get_global_position()), -1) #marking tiles fot AStar
 	astar.add_walkable_exceptions(get_global_position(), false)
-	point = astar.step(self.get_global_position(), pos)
-	
-	rays.look_at(pos)
-	AI_script.step(rays, sprite.get_anim(), sprite.now_frame, site)
-	if AI_script.need_attack: #Need attack?
-		if sprite.get_anim() != "attack":
+	if pos != null:
+		point = astar.step(self.get_global_position(), pos)
+		rays.look_at(pos)
+	if type == "healer":
+		AI_script.step(rays, sprite.get_anim(), sprite.now_frame, site, self)
+	else:
+		AI_script.step(rays, sprite.get_anim(), sprite.now_frame, site)
+	if type != "healer": #Need attack?
+		if AI_script.need_attack and sprite.get_anim() != "attack":
 			sprite.change_anim("attack")
+	else:
+		if AI_script.need_heal and sprite.get_anim() != "heal":
+			sprite.change_anim("heal")
+	
 		#if now_anim == "attack" and now_frame == end_frame and type == "mage":
 		#	need_hit = true
 	
@@ -97,7 +110,7 @@ func play_anim():
 			transform.x *= -1
 			site = "right"
 		
-	if sprite.get_anim() == "attack" and sprite.is_anim_ended:
+	if (sprite.get_anim() == "attack" or sprite.get_anim() == "heal") and sprite.is_anim_ended:
 		sprite.change_anim("walk")
 		
 

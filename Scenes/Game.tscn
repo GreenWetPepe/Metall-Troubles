@@ -85,7 +85,13 @@ z_index = -1
 [node name="Enemy list" type="Node2D" parent="Objects"]
 z_index = 1
 
+[node name="Spawn enemy list" type="Node2D" parent="Objects"]
+z_index = 1
+
 [node name="Bullet list" type="Node2D" parent="Objects"]
+z_index = 2
+
+[node name="Effects list" type="Node2D" parent="Objects"]
 z_index = 2
 
 [node name="Enviroment list" type="Node2D" parent="Objects"]
@@ -95,10 +101,19 @@ z_index = 2
 [node name="Torches list" type="Node2D" parent="Objects/Decorate enviroment list"]
 
 [node name="Decoration" parent="Objects/Decorate enviroment list/Torches list" instance=ExtResource( 12 )]
-position = Vector2( 91.2038, 79.4278 )
+position = Vector2( 91.204, 80 )
 
 [node name="Decoration2" parent="Objects/Decorate enviroment list/Torches list" instance=ExtResource( 12 )]
-position = Vector2( 245.753, 79.4275 )
+position = Vector2( 890, 80 )
+
+[node name="Decoration3" parent="Objects/Decorate enviroment list/Torches list" instance=ExtResource( 12 )]
+position = Vector2( 1375.66, 80 )
+
+[node name="Decoration4" parent="Objects/Decorate enviroment list/Torches list" instance=ExtResource( 12 )]
+position = Vector2( 2001.66, 80 )
+
+[node name="Decoration5" parent="Objects/Decorate enviroment list/Torches list" instance=ExtResource( 12 )]
+position = Vector2( 2483.66, 80 )
 
 [node name="Ultimate bullet list" type="Node2D" parent="Objects/Decorate enviroment list"]
 
@@ -133,10 +148,11 @@ scale = Vector2( 1.91095, 1.91095 )
 texture = ExtResource( 14 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 1693.1, 181.926 )
+position = Vector2( 720.348, 305.56 )
 
 [node name="Camera" parent="." instance=ExtResource( 4 )]
 scale = Vector2( 1.00925, 0.989246 )
+z_index = 15
 
 [node name="UI" parent="Camera" instance=ExtResource( 11 )]
 margin_left = -512.0

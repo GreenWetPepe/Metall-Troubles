@@ -1,7 +1,9 @@
 extends Node2D
 
 onready var enemy_list = get_node("Enemy list")
+onready var enemy_spawn_list = get_node("Spawn enemy list")
 onready var bullet_list = get_node("Bullet list")
+onready var effect_list = get_node("Effects list")
 onready var corpse_list = get_node("Corpse list")
 onready var enviroment_list = get_node("Enviroment list")
 onready var decorate_enviroment_list = get_node("Decorate enviroment list")
@@ -13,14 +15,18 @@ onready var tilemap = get_parent().get_node("AStar")
 onready var NORMAL_ENEMY = preload("res://Scripts/Normal enemy.gd")
 onready var LIGHT_ENEMY = preload("res://Scripts/Light enemy.gd")
 onready var MAGE_ENEMY = preload("res://Scripts/Mage enemy.gd")
+onready var HEALER_ENEMY = preload("res://Scripts/Healer enemy.gd")
 
 onready var BULLET = preload("res://Scenes/Bullet.tscn")
 onready var ENEMY = preload("res://Scenes/Enemy.tscn")
 onready var CORPSE = preload("res://Scenes/Dead body.tscn")
 onready var EXPLOSION = preload("res://Scenes/Explosion.tscn")
 onready var ULTI_BUL = preload("res://Scenes/Ultimate bullet.tscn")
-
+onready var ANIMATED_SPRITE = preload("res://Scenes/Animated sprite.tscn")
+onready var EFFECT = preload("res://Scenes/Effect.tscn")
 onready var TORCH_TEX = load("res://Sprites/torch.png")
+onready var HEAL_EFFECT_TEX = load("res://Sprites/heal effect.png")
+onready var ENEMY_SPAWN_TEX = load("res://Sprites/enemies/spawn enemy.png")
 
 
 func _ready():
@@ -43,19 +49,32 @@ func mark_object():
 	#	tilemap.add_walkable_exceptions(enemy.get_global_position(), true)
 	
 func step(player_pos):
-	for enemy in enemy_list.get_children(): #Work with enemy_list
-		enemy.step(player_pos)
-		if enemy.need_hit:
-			player.get_hit() 
-			enemy.need_hit = false
-		if enemy.AI_script.hp <= 0 and not enemy.is_dead: # Add corpse if enemy dead
-			enemy.sprite.change_anim("dead")
-			enemy.is_dead = true
-			spawn_corpse(enemy)
+	#if enemy_spawn_list.get_child_count() == 0 and enemy_list.get_child_count() > 0 and enemy_list.get_child(0).visible == false:
+	#	for enemy in enemy_list.get_children():
+	#		enemy.visible = true
+	if enemy_spawn_list.get_child_count() == 0 and enemy_list.get_child_count() > 0 and enemy_list.get_child(0).visible == true:
+		for enemy in enemy_list.get_children(): #Work with enemy_list
+			enemy.step(player_pos)
+			if enemy.need_hit:
+				player.get_hit() 
+				enemy.need_hit = false
+			if enemy.AI_script.hp <= 0 and not enemy.is_dead: # Add corpse if enemy dead
+				enemy.sprite.change_anim("dead")
+				enemy.is_dead = true
+				spawn_corpse(enemy)
+	for enemy_spawn in enemy_spawn_list.get_children():#Work with enemy_spawn_list
+		enemy_spawn.step()
+		if enemy_spawn.is_anim_ended:
+			enemy_spawn_list.remove_child(enemy_spawn)
 	for bullet in bullet_list.get_children(): #Work with bullet_list
 		bullet.step()
 		if bullet.need_del:
 			bullet_list.remove_child(bullet)
+	for effect in effect_list.get_children():
+		effect.step()
+		if effect.effect_ended:
+			effect.target.is_healing = false
+			effect_list.remove_child(effect)
 	for explosion in explosion_list.get_children(): #Work with explosion_list
 		explosion.step()
 		if explosion.need_del:
@@ -81,6 +100,14 @@ func spawn_bullet(pos, dir, ang, anim_preset, preset, type, is_friendly):
 		bullet.add_collision_exception_with(player)
 	for bul in bullet_list.get_children():
 		bullet.add_collision_exception_with(bul)
+	
+func spawn_enemy_heal(anim_preset, preset, enemy_to_heal):
+	var heal_effect = EFFECT.instance()
+	heal_effect.set_target(enemy_to_heal)
+	heal_effect.load_preset(anim_preset, preset, HEAL_EFFECT_TEX)
+	effect_list.add_child(heal_effect)
+	enemy_to_heal.AI_script.hp = clamp(enemy_to_heal.AI_script.hp + preset[0], 0, enemy_to_heal.AI_script.max_hp)
+	pass
 
 
 func spawn_enemies(enemies_types):
@@ -102,20 +129,31 @@ func spawn_enemies(enemies_types):
 	for i in enemies_types[3]: #healer
 		var enemy = ENEMY.instance()
 		enemy.set_pos()
-		enemy.load_preset(Main.healer_enemy_preset, Main.healer_enemy_anim_pos, "healer", NORMAL_ENEMY.new())
+		enemy.load_preset(Main.healer_enemy_preset, Main.healer_enemy_anim_pos, "healer", HEALER_ENEMY.new())
 		enemy_list.add_child(enemy)
 	for i in enemies_types[4]: #gunslinger
 		var enemy = ENEMY.instance()
 		enemy.set_pos()
 		enemy.load_preset(Main.mage_enemy_preset, Main.mage_enemy_anim_pos, "mage", MAGE_ENEMY.new())
 		enemy_list.add_child(enemy)
-	pass
+	for enemy in enemy_list.get_children(): #Spawn enemy spawns and make enemies unvisible
+		spawn_enemy_spawn(enemy.position)
+		#enemy.visible = false
 	
 func spawn_corpse(enemy):
 	var corpse = CORPSE.instance()
 	corpse.load_preset(enemy.get_global_position(), enemy.texture, enemy.frames_count, enemy.sprite.get_anim_preset())
 	corpse_list.add_child(corpse)
 	enemy_list.remove_child(enemy)
+
+func spawn_enemy_spawn(pos):
+	var enemy_spawn = ANIMATED_SPRITE.instance()
+	enemy_spawn.load_preset(Main.spawn_enemy, 3, ENEMY_SPAWN_TEX)
+	enemy_spawn.position = pos
+	enemy_spawn.set_scale(4)
+	enemy_spawn.set_repeat_count(1)
+	enemy_spawn.change_anim("spawn")
+	enemy_spawn_list.add_child(enemy_spawn)
 
 func spawn_explosion(pos, exp_pres):
 	var explosion = EXPLOSION.instance()

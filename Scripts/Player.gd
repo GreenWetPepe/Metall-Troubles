@@ -114,6 +114,7 @@ func play_anim():
 	
 	
 func step():
+	#print(get_global_position())
 	sprite.step()
 	if is_pressed and sprite.get_anim() != "ultimate":
 		gun.shoot()

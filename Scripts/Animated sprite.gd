@@ -11,11 +11,16 @@ var now_frame
 var is_anim_ended = false
 var is_anim_looped
 
+var repeat_count = null
+var now_repeat = 0
+
 func step():
 	if OS.get_ticks_msec() - last_anim_step > anim_step_delay:
-		if now_frame == end_frame and not is_anim_looped:
+		if now_frame == end_frame and (not is_anim_looped or repeat_count != null and repeat_count == now_repeat):
 			is_anim_ended = true
 			return
+		if is_anim_looped and now_frame == end_frame:
+			now_repeat += 1
 		now_frame += 1
 		now_frame = (now_frame - start_frame) % (end_frame - start_frame + 1) + start_frame
 		frame = now_frame
@@ -45,8 +50,14 @@ func load_preset(preset, frames, img):
 	texture = img
 	vframes = frames
 
+func set_scale(scl):
+	scale = Vector2(scl, scl)
+
 func load_anim_preset(preset):
 	anim_preset = preset
+	
+func set_repeat_count(count):
+	repeat_count = count
 
 func get_anim():
 	return now_anim

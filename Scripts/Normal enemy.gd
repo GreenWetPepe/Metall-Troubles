@@ -1,6 +1,7 @@
 extends Node
 
 var hp
+var max_hp
 var speed
 var const_speed
 var damage
@@ -53,6 +54,7 @@ func need_attack(rays):
 func load_characteristics(speed, hp, damage, attack_speed):
 	self.speed = speed
 	self.hp = hp
+	max_hp = hp
 	self.damage = damage
 	self.attack_speed = attack_speed
 	const_speed = speed

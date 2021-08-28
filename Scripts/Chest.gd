@@ -1,7 +1,7 @@
 extends Node2D
 
 onready var sprite = get_node("Animated sprite")
-onready var rays = get_node("Rays")
+onready var area = get_node("Area2D")
 
 var is_chest_opened = false
 var is_loot_generated = false
@@ -15,8 +15,8 @@ func step():
 	if sprite.get_anim() != null:
 		sprite.step()
 	if not is_chest_opened:
-		for ray in rays.get_children():
-			if ray.is_colliding() and ray.get_collider().name == "Player" and ray.get_collider().need_open_chest:
+		for body in area.get_overlapping_bodies():
+			if "Player" in body.name and body.need_open_chest:
 				sprite.change_anim("open")
 				is_chest_opened = true
 				break
